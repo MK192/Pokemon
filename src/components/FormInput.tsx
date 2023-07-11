@@ -1,23 +1,25 @@
+import { forwardRef } from 'react';
 import { StyledFormInput } from '../componentStyles/FormInput.styled';
 
 type Props = {
-  name: string;
-  error: string;
+  labelText: string;
+  error: string | undefined;
   optional: string;
-  setValue: (newValue: string) => void;
 };
 
-const FormInput = ({ name, error = '', optional = '', setValue }: Props) => {
-  return (
-    <StyledFormInput>
-      <div className="label-container">
-        <label>{name}</label>
-        {optional && !error && <label className="message">{optional}</label>}
-        {error && <label className="error">{error}</label>}
-      </div>
-      <input type="text" onChange={(e) => setValue(e.target.value)} />
-    </StyledFormInput>
-  );
-};
+const FormInput = forwardRef<HTMLInputElement, Props>(
+  ({ labelText, error = '', optional = '', ...other }: Props, ref) => {
+    return (
+      <StyledFormInput>
+        <div className="label-container">
+          <label>{labelText}</label>
+          {optional && !error && <label className="message">{optional}</label>}
+          {error && <label className="error">{error}</label>}
+        </div>
+        <input type="text" ref={ref} {...other} />
+      </StyledFormInput>
+    );
+  }
+);
 
 export default FormInput;
