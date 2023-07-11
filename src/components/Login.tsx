@@ -1,24 +1,66 @@
-import { useEffect, useState } from 'react';
 import { StyledLogin } from '../componentStyles/Login.styled';
-
+import { useForm } from 'react-hook-form';
+import { handleSave } from '../utils/functions';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { FormData } from '../types/types';
 import FormInput from './FormInput';
-const Login = () => {
-  const [userName, setUserName] = useState<string>('');
-  const [userAge, setUserAge] = useState<string>('');
-  const [userEmail, setUserEmail] = useState<string>('');
+import { useUserData } from './context/ContextProvider';
+// shema for form valiation
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: `field can't be empty` })
+    .max(256, { message: `max number of characters is 256` }),
+  age: z
+    .number({
+      invalid_type_error: `you must enter your age`,
+    })
+    .positive()
+    .int()
+    .gte(12, {
+      message: `you must be 12 years old or older`,
+    }),
+  email: z.string().email(),
+});
 
+// props type
+type Props = {
+  setIsLoged: (isLoged: boolean) => void;
+};
+
+const Login = ({ setIsLoged }: Props) => {
+  const { register, control, handleSubmit, formState } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+  });
+  const { errors } = formState;
+  const { setLogedUser } = useUserData();
   return (
     <StyledLogin>
-      <form>
-        <FormInput name="Name" error="" optional="" setValue={setUserName} />
+      <form
+        onSubmit={handleSubmit((formValues) => {
+          handleSave(formValues, setIsLoged, setLogedUser);
+        })}
+      >
+        <FormInput
+          {...register('name')}
+          labelText="Name"
+          error={errors.name?.message}
+          optional=""
+        />
 
         <FormInput
-          name="Age"
-          error=""
+          {...register('age', { valueAsNumber: true })}
+          labelText="Age"
+          error={errors.age?.message}
           optional="you must be 12 or older"
-          setValue={setUserAge}
         />
-        <FormInput name="Email" error="" optional="" setValue={setUserEmail} />
+        <FormInput
+          {...register('email')}
+          labelText="Email"
+          error={errors.email?.message}
+          optional=""
+        />
         <div className="submit-button">
           <button type="submit" value="submit">
             ENTER
