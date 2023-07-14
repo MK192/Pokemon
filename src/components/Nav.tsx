@@ -1,5 +1,5 @@
 import { StyledNav } from '../componentStyles/Nav.styled';
-import { useUserData } from './context/ContextProvider';
+import { useUserData } from '../context/ContextProvider';
 
 const Nav = () => {
   const { logedUser } = useUserData();

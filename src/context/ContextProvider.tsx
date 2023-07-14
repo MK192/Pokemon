@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
-import { isLocalStorageAccessible } from '../../utils/functions';
-import { UserData } from '../../types/types';
+import { isLocalStorageAccessible } from '../utils/functions';
+import { UserData } from '../types/types';
 
 interface UserDataContext {
   logedUser: null | UserData;

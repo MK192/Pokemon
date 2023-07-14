@@ -11,7 +11,7 @@ export default createGlobalStyle`
 html {
   /*font-size: 10px; */
   font-size: 62.5%;
-  background-color: #f0f2f5;
+  background-color: #F2F2F2;
  
   
 }
