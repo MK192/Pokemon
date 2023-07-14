@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { FormData } from '../types/types';
 import FormInput from './FormInput';
-import { useUserData } from './context/ContextProvider';
+import { useUserData } from '../context/ContextProvider';
 // shema for form valiation
 const formSchema = z.object({
   name: z
@@ -46,20 +46,20 @@ const Login = ({ setIsLoged }: Props) => {
           {...register('name')}
           labelText="Name"
           error={errors.name?.message}
-          optional=""
+          notice=""
         />
 
         <FormInput
           {...register('age', { valueAsNumber: true })}
           labelText="Age"
           error={errors.age?.message}
-          optional="you must be 12 or older"
+          notice="you must be 12 or older"
         />
         <FormInput
           {...register('email')}
           labelText="Email"
           error={errors.email?.message}
-          optional=""
+          notice=""
         />
         <div className="submit-button">
           <button type="submit" value="submit">

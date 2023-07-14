@@ -1,11 +1,11 @@
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import Nav from './components/Nav';
 import Login from './components/Login';
-import Pokemons from './components/Pokemons';
-import ContextProvider from './components/context/ContextProvider';
+import PokemonList from './components/PokemonList';
+import ContextProvider from './context/ContextProvider';
+
 import { useEffect, useState } from 'react';
 import { isLocalStorageAccessible } from './utils/functions';
+
 function App() {
   const [isLoged, setIsLoged] = useState(false);
   const [userData, setUserData] = useState<string | null>(null);
@@ -23,7 +23,7 @@ function App() {
     <>
       <ContextProvider>
         <Nav />
-        {!isLoged ? <Login setIsLoged={setIsLoged} /> : <Pokemons />}
+        {!isLoged ? <Login setIsLoged={setIsLoged} /> : <PokemonList />}
       </ContextProvider>
     </>
   );
