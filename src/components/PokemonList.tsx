@@ -1,42 +1,50 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { StyledPokemonList } from '../componentStyles/PokemonList.styled';
+import { format } from 'date-fns';
+import { useSelectedId } from '../context/ContextProvider';
+
 import axios from 'axios';
 import PokemonCard from './PokemonCard';
 const PokemonList = () => {
+  const [page, setPage] = useState<number>(0);
+  const [offset, setOFfset] = useState<number>(0);
+  const [lastFetchDate, setLastFetchDate] = useState<string | null>(null);
+
   const {
     isLoading,
     error,
     data: pokemons,
+    refetch,
   } = useQuery({
-    queryKey: ['pokemons'],
-
+    queryKey: ['pokemons', { offset }],
+    cacheTime: 600000,
+    keepPreviousData: true,
     queryFn: () =>
-      axios.get('https://pokeapi.co/api/v2/pokemon/?limit=8').then((res) => {
-        console.log(res.data);
+      axios
+        .get(`https://pokeapi.co/api/v2/pokemon/?limit=8&offset=${offset}`)
+        .then((res) => {
+          //    console.log(res.data);
+          return res.data;
+        }),
+    onSuccess: () => {
+      const currentDate = format(new Date(), 'dd MMM yy, H:mm');
 
-        return res.data;
-      }),
-  });
-  const urls = pokemons?.results?.map((pokemon: any) => pokemon.url);
-
-  const { data: singlePokemon } = useQuery({
-    queryKey: ['pokemon', urls],
-    queryFn: async () => {
-      const fetchData = async (url) => {
-        const response = await axios.get(url);
-        return response.data;
-      };
-
-      if (urls) {
-        const data = await Promise.all(urls.map(fetchData));
-        return data;
-      } else {
-        return null;
-      }
+      setLastFetchDate(currentDate);
     },
   });
 
+  const ids = pokemons?.results?.map((pokemon: any) => {
+    const id = pokemon?.url.match(/\/(\d+)\/$/)[1];
+
+    return id;
+  });
+  /*
+  useEffect(() => {
+    //  console.log(offset);
+
+    refetch();
+  }, [offset, refetch]);*/
   return (
     <StyledPokemonList>
       <div className="filter">
@@ -49,19 +57,60 @@ const PokemonList = () => {
       </div>
       <hr />
       <div className="pokemon-container">
-        <div className="pokemon-list">
-          {singlePokemon?.map((pokemon) => (
-            <PokemonCard
-              pokemon={pokemon}
-              isLoading={isLoading}
-              error={error}
-              key={pokemon.id}
-            />
-          ))}
+        <div className="pokemon-content">
+          <div className="pokemon-list">
+            {pokemons?.results?.map((pokemon, index: number) => (
+              <PokemonCard
+                pokemon={pokemon}
+                isLoading={isLoading}
+                error={error}
+                key={pokemon.name}
+                ids={ids[index]}
+              />
+            ))}
+          </div>
+          <div className="pokemon-preview">
+            <span>preview</span>
+          </div>
         </div>
-        <div className="pokemon-preview">
-          <p>preview</p>
+      </div>
+      <div className="date-totalCount">
+        <div className="date-fetched">
+          <span>Data fetched:</span>
+          {lastFetchDate}
         </div>
+        <div className="pokemon-count">
+          <span>Total pokemons:</span> {pokemons?.count}
+        </div>
+      </div>
+      <hr />
+      <div className="pagination">
+        <button
+          type="button"
+          onClick={() => {
+            setPage((prev) => prev - 1);
+            setOFfset((prev) => prev - 8);
+          }}
+          disabled={page === 0}
+        >
+          {'<'}
+        </button>
+        <input
+          type="number"
+          min={0}
+          value={page}
+          onChange={(e) => setPage(Number(e.target.value))}
+        />
+        <button
+          type="button"
+          onClick={() => {
+            setPage((prev) => prev + 1);
+            setOFfset((prev) => prev + 8);
+          }}
+          disabled={(page + 1) * 8 > pokemons?.count}
+        >
+          {'>'}
+        </button>
       </div>
     </StyledPokemonList>
   );
