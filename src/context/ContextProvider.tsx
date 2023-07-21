@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { isLocalStorageAccessible } from '../utils/functions';
 import { UserData } from '../types/types';
 
@@ -27,12 +27,13 @@ interface SelectedContext {
 }
 
 const SelectedContext = createContext<SelectedContext>({
-  selected: 0,
+  selected: 1,
   setSelected: function (selectedPokemonId: number): void {
     throw new Error('Function not implemented.');
   },
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useSelectedId() {
   return useContext(SelectedContext);
 }
@@ -42,7 +43,8 @@ const ContextProvider = ({ children }: any) => {
       ? JSON.parse(localStorage.getItem('pokemonMaster') || '0') || null
       : null
   );
-  const [selected, setSelected] = useState<number>(0);
+  const [selected, setSelected] = useState<number>(1);
+
   return (
     <UserDataContext.Provider value={{ logedUser, setLogedUser }}>
       <SelectedContext.Provider value={{ selected, setSelected }}>

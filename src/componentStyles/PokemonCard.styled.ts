@@ -3,7 +3,6 @@ export const StyledPokemonCard = styled.div`
   .pokemon-card,
   .pokemon-card-selected {
     display: flex;
-
     background-color: white;
     height: 110px;
     align-items: center;
@@ -14,13 +13,14 @@ export const StyledPokemonCard = styled.div`
     padding: 20px;
     margin: 5px;
 
-    width: 400px;
+    width: 450px;
   }
 
   .pokemon-card-selected {
     background-color: #e6e3fa;
     font-weight: 700;
   }
+
   .pokemon-id {
     margin-left: auto;
     border: 1px solid #fafbfd;

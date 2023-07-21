@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { StyledPokemonList } from '../componentStyles/PokemonList.styled';
 import { format } from 'date-fns';
@@ -6,6 +6,7 @@ import { useSelectedId } from '../context/ContextProvider';
 
 import axios from 'axios';
 import PokemonCard from './PokemonCard';
+import PokemonPreview from './PokemonPreview';
 const PokemonList = () => {
   const [page, setPage] = useState<number>(0);
   const [offset, setOFfset] = useState<number>(0);
@@ -15,7 +16,6 @@ const PokemonList = () => {
     isLoading,
     error,
     data: pokemons,
-    refetch,
   } = useQuery({
     queryKey: ['pokemons', { offset }],
     cacheTime: 600000,
@@ -24,7 +24,6 @@ const PokemonList = () => {
       axios
         .get(`https://pokeapi.co/api/v2/pokemon/?limit=8&offset=${offset}`)
         .then((res) => {
-          //    console.log(res.data);
           return res.data;
         }),
     onSuccess: () => {
@@ -37,14 +36,9 @@ const PokemonList = () => {
   const ids = pokemons?.results?.map((pokemon: any) => {
     const id = pokemon?.url.match(/\/(\d+)\/$/)[1];
 
-    return id;
+    return Number(id);
   });
-  /*
-  useEffect(() => {
-    //  console.log(offset);
 
-    refetch();
-  }, [offset, refetch]);*/
   return (
     <StyledPokemonList>
       <div className="filter">
@@ -56,22 +50,21 @@ const PokemonList = () => {
         </select>
       </div>
       <hr />
-      <div className="pokemon-container">
-        <div className="pokemon-content">
-          <div className="pokemon-list">
-            {pokemons?.results?.map((pokemon, index: number) => (
-              <PokemonCard
-                pokemon={pokemon}
-                isLoading={isLoading}
-                error={error}
-                key={pokemon.name}
-                ids={ids[index]}
-              />
-            ))}
-          </div>
-          <div className="pokemon-preview">
-            <span>preview</span>
-          </div>
+
+      <div className="pokemon-content">
+        <div className="pokemon-list">
+          {pokemons?.results?.map((pokemon, index: number) => (
+            <PokemonCard
+              pokemon={pokemon}
+              isLoading={isLoading}
+              error={error}
+              key={pokemon.name}
+              ids={ids[index]}
+            />
+          ))}
+        </div>
+        <div className="pokemon-preview">
+          <PokemonPreview />
         </div>
       </div>
       <div className="date-totalCount">

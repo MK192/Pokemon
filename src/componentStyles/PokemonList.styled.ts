@@ -2,9 +2,8 @@ import styled from 'styled-components';
 export const StyledPokemonList = styled.div`
   display: flex;
   flex-direction: column;
-
   margin: 20px 15px 30px 15px;
-
+  flex-wrap: wrap;
   .filter {
     align-self: flex-end;
     font-size: 1.6rem;
@@ -41,10 +40,13 @@ export const StyledPokemonList = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    width: 65%;
+
+    max-width: 65%;
   }
   .pokemon-preview {
     width: 35%;
+
+    height: 500px;
   }
   .date-totalCount {
     margin-top: 30px;
