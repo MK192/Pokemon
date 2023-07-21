@@ -31,15 +31,57 @@ export const StyledPokemonList = styled.div`
     margin: 20px 0px;
     border: 1px solid #efefef;
   }
-  .pokemon-container {
+  .pokemon-content {
     display: flex;
+
+    gap: 20px;
   }
   .pokemon-list {
-    max-height: 60rem;
-    width: 60%;
+    flex: 1;
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 10px;
+    width: 65%;
+  }
+  .pokemon-preview {
+    width: 35%;
+  }
+  .date-totalCount {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+
+    span {
+      color: #969696;
+    }
+  }
+  .pagination {
+    align-self: center;
+    display: flex;
+    gap: 10px;
+    button,
+    input {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      background-color: white;
+    }
+    button {
+      color: #dfe3e8;
+      font-size: 18px;
+      &:disabled {
+        background-color: #c4cdd5;
+        color: white;
+      }
+    }
+    input {
+      text-align: center;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
 `;
