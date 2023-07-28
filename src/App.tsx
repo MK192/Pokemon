@@ -1,41 +1,47 @@
-import Nav from './components/Nav';
-import Login from './components/Login';
-import PokemonList from './components/PokemonList';
-import PokemonSingle from './components/PokemonSingle';
-import ContextProvider from './context/ContextProvider';
+import Login from "./components/Login";
+import PokemonList from "./components/PokemonList";
+import PokemonSingle from "./components/PokemonSingle";
+import SelectedPokemonContext from "./context/SelectedPokemonContext";
+import UserContext from "./context/UserContext";
+import Nav from "./components/Nav";
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { isLocalStorageAccessible } from './utils/functions';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { isLocalStorageAccessible } from "./utils/functions";
 
 function App() {
-  const [isLoged, setIsLoged] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState<string | null>(null);
 
   useEffect(() => {
     if (isLocalStorageAccessible()) {
-      const storage = localStorage.getItem('pokemonMaster');
+      const storage = localStorage.getItem("pokemonMaster");
       setUserData(storage || null);
 
-      userData ? setIsLoged(true) : setIsLoged(false);
+      userData ? setIsLoggedIn(true) : setIsLoggedIn(false);
     }
-  }, [userData, isLoged]);
+  }, [userData, isLoggedIn]);
 
   return (
     <>
       <BrowserRouter>
-        <ContextProvider>
-          <Nav />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                !isLoged ? <Login setIsLoged={setIsLoged} /> : <PokemonList />
-              }
-            />
-            <Route path="/pokemon/:id" element={<PokemonSingle />} />
-          </Routes>
-        </ContextProvider>
+        <SelectedPokemonContext>
+          <UserContext>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  !isLoggedIn ? (
+                    <Login setIsLoged={setIsLoggedIn} />
+                  ) : (
+                    <PokemonList />
+                  )
+                }
+              />
+              <Route path="/pokemon/:id" element={<PokemonSingle />} />
+            </Routes>
+          </UserContext>
+        </SelectedPokemonContext>
       </BrowserRouter>
     </>
   );

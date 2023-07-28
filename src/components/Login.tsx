@@ -1,11 +1,11 @@
-import { StyledLogin } from '../componentStyles/Login.styled';
-import { useForm } from 'react-hook-form';
-import { handleSave } from '../utils/functions';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { FormData } from '../types/types';
-import FormInput from './FormInput';
-import { useUserData } from '../context/ContextProvider';
+import { StyledLogin } from "../componentStyles/Login.styled";
+import { useForm } from "react-hook-form";
+import { handleSave } from "../utils/functions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { FormData } from "../types/types";
+import FormInput from "./FormInput";
+import { useUserData } from "../context/UserContext";
 // shema for form valiation
 const formSchema = z.object({
   name: z
@@ -43,20 +43,20 @@ const Login = ({ setIsLoged }: Props) => {
         })}
       >
         <FormInput
-          {...register('name')}
+          {...register("name")}
           labelText="Name"
           error={errors.name?.message}
           notice=""
         />
 
         <FormInput
-          {...register('age', { valueAsNumber: true })}
+          {...register("age", { valueAsNumber: true })}
           labelText="Age"
           error={errors.age?.message}
           notice="you must be 12 or older"
         />
         <FormInput
-          {...register('email')}
+          {...register("email")}
           labelText="Email"
           error={errors.email?.message}
           notice=""

@@ -1,22 +1,25 @@
-import { StyledPokemonCard } from '../componentStyles/PokemonCard.styled';
-import { useSelectedId } from '../context/ContextProvider';
+import { StyledPokemonCard } from "../componentStyles/PokemonCard.styled";
+import { useSelectedId } from "../context/SelectedPokemonContext";
+import { PokemonResult } from "../types/types";
 type Props = {
-  pokemon: object;
+  pokemon: PokemonResult;
+  isError: boolean;
   isLoading: boolean;
   error: unknown;
   ids: number;
 };
-const PokemonCard = ({ pokemon, isLoading, error, ids }: Props) => {
+const PokemonCard = ({ pokemon, isError, isLoading, error, ids }: Props) => {
   const { selected, setSelected } = useSelectedId();
 
-  if (isLoading) return 'Loading...';
+  if (isLoading) return "Loading...";
 
-  if (error) return 'An error has occurred: ' + error.message;
+  if (isError && error instanceof Error)
+    return "An error has occurred: " + error.message;
 
   return (
     <StyledPokemonCard>
       <div
-        className={selected === ids ? 'pokemon-card-selected' : 'pokemon-card'}
+        className={selected === ids ? "pokemon-card-selected" : "pokemon-card"}
         onClick={() => setSelected(ids)}
       >
         <img

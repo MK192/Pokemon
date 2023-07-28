@@ -1,31 +1,38 @@
-import { useSelectedId } from '../context/ContextProvider';
-import { StyledPokemonPreview } from '../componentStyles/PokemonPreview';
-import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { useSelectedId } from "../context/SelectedPokemonContext";
+import { StyledPokemonPreview } from "../componentStyles/PokemonPreview.styled";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { SelectedAbility } from "../types/types";
 
-import axios from 'axios';
-const PokemonPreview = () => {
+import axios from "axios";
+
+type Props = {
+  isSinglePokemon: boolean;
+};
+const PokemonPreview = ({ isSinglePokemon }: Props) => {
   const { selected } = useSelectedId();
 
   const {
     isLoading,
+    isError,
     error,
     data: selectedPokemon,
   } = useQuery({
-    queryKey: ['pokemons', selected],
-    cacheTime: 600000,
+    queryKey: ["pokemons", selected],
 
+    refetchOnWindowFocus: false,
     queryFn: () =>
       axios.get(`https://pokeapi.co/api/v2/pokemon/${selected}`).then((res) => {
         return res.data;
       }),
   });
-  if (isLoading) return 'Loading...';
+  if (isLoading) return "Loading...";
 
-  if (error) return 'An error has occurred: ' + error.message;
+  if (isError && error instanceof Error)
+    return "An error has occurred: " + error.message;
   return (
     <StyledPokemonPreview>
-      <img src="pokeball.png" alt="pokeball" className="pokeball" />
+      <img src="../public/pokeball.png" alt="pokeball" className="pokeball" />
 
       <div className="preview-container">
         <img
@@ -35,9 +42,11 @@ const PokemonPreview = () => {
         />
         <div className="pokemon-preview-name">
           <strong>{selectedPokemon.name}</strong>
-          <Link to={`pokemon/${selected}`}>
-            <img src="preview.png" alt="arrow icon " />
-          </Link>
+          {!isSinglePokemon && (
+            <Link to={`pokemon/${selected}`}>
+              <img src="preview.png" alt="arrow icon " />
+            </Link>
+          )}
         </div>
         <div className="stats-abilities">
           <hr />
@@ -49,7 +58,7 @@ const PokemonPreview = () => {
             </ul>
           </div>
           <div className="preview-abilities">
-            {selectedPokemon.abilities?.map((pokemon) => {
+            {selectedPokemon.abilities?.map((pokemon: SelectedAbility) => {
               return (
                 <div className="ability" key={pokemon?.ability?.name}>
                   {pokemon?.ability?.name}
@@ -59,6 +68,9 @@ const PokemonPreview = () => {
           </div>
         </div>
       </div>
+      {isSinglePokemon && (
+        <div className="selected-id">{selectedPokemon.id}</div>
+      )}
     </StyledPokemonPreview>
   );
 };

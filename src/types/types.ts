@@ -10,3 +10,21 @@ export type UserData = {
   email: string;
   pokemons: string[];
 };
+
+export type PokemonResult = {
+  name: string;
+  url: string;
+};
+export type Pokemons = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: PokemonResult;
+};
+
+export type SelectedAbility = {
+  ability: {
+    name: string;
+    url: string;
+  };
+};
