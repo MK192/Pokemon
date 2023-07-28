@@ -8,6 +8,12 @@ export const StyledNav = styled.nav`
 
   background-color: #7c68ee;
   height: 5.5rem;
+  img {
+    height: 21px;
+    width: 21px;
+    margin-left: 20px;
+    cursor: pointer;
+  }
   span {
     font-size: 2.4rem;
     font-weight: 700;

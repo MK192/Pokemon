@@ -13,7 +13,19 @@ export const StyledPokemonPreview = styled.div`
     width: 47px;
     position: absolute;
   }
-
+.selected-id{
+  display: flex;
+ background-color: #FAFBFD
+ box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.09);
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  font-size:1.2rem;
+  font-weight:700;
+  border: 2px solid #FAFBFD;
+  width: 23px;
+  height: 23px;
+}
   .preview-container {
     flex: 1;
     display: flex;

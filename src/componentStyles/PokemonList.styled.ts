@@ -35,6 +35,9 @@ export const StyledPokemonList = styled.div`
 
     gap: 20px;
   }
+  .pokemon-content-loading {
+    font-size: 24px;
+  }
   .pokemon-list {
     flex: 1;
     display: flex;
@@ -46,7 +49,7 @@ export const StyledPokemonList = styled.div`
   .pokemon-preview {
     width: 35%;
 
-    height: 500px;
+    height: 50rem;
   }
   .date-totalCount {
     margin-top: 30px;
