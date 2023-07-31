@@ -13,7 +13,7 @@ export const StyledPokemonCard = styled.div`
     padding: 20px;
     margin: 5px;
 
-    width: 45rem;
+    width: 40rem;
   }
 
   .pokemon-card-selected {

@@ -13,6 +13,21 @@ export const StyledPokemonPreview = styled.div`
     width: 47px;
     position: absolute;
   }
+
+  .pokeball-spining{
+    height: 47px;
+    width: 47px;
+    position: absolute;
+    animation: rotation 2s infinite linear;
+    @keyframes rotation {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
 .selected-id{
   display: flex;
  background-color: #FAFBFD

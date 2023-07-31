@@ -22,12 +22,11 @@ const PokemonSingle = () => {
     refetchOnWindowFocus: false,
     queryFn: () =>
       axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`).then((res) => {
-        console.log(res.data);
         return res.data;
       }),
   });
 
-  const currentDate = format(dataUpdatedAt, "dd MMM yy, H:mm");
+  const currentDate = format(dataUpdatedAt, "dd MMM yy, H:mm:ss");
 
   if (isLoading)
     return (

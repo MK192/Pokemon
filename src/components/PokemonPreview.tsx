@@ -1,17 +1,28 @@
+import { useState } from "react";
 import { useSelectedId } from "../context/SelectedPokemonContext";
 import { StyledPokemonPreview } from "../componentStyles/PokemonPreview.styled";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { SelectedAbility } from "../types/types";
+import { pokemonCatch } from "../utils/functions";
+import { isLocalStorageAccessible } from "../utils/functions";
 
 import axios from "axios";
+import PreviewMessage from "./PreviewMessage";
 
 type Props = {
   isSinglePokemon: boolean;
 };
 const PokemonPreview = ({ isSinglePokemon }: Props) => {
   const { selected } = useSelectedId();
-
+  const [isAnimationActive, setIsAnimationActive] = useState(false);
+  const [catchMessage, setCatchMessage] = useState("");
+  let catchedPokemonNumber = null;
+  if (isLocalStorageAccessible()) {
+    catchedPokemonNumber = JSON.parse(
+      localStorage.getItem("pokemonMaster") || "{}"
+    );
+  }
   const {
     isLoading,
     isError,
@@ -26,13 +37,32 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
         return res.data;
       }),
   });
+
+  const animation = () => {
+    setIsAnimationActive(true);
+    setTimeout(() => {
+      setIsAnimationActive(false);
+    }, 3000);
+  };
   if (isLoading) return "Loading...";
 
   if (isError && error instanceof Error)
     return "An error has occurred: " + error.message;
   return (
     <StyledPokemonPreview>
-      <img src="../public/pokeball.png" alt="pokeball" className="pokeball" />
+      <img
+        src="/pokeball.png"
+        alt="pokeball"
+        className={isAnimationActive ? "pokeball-spining" : "pokeball"}
+        onClick={() => {
+          pokemonCatch(selected).then((result) => {
+            console.log(result);
+            setCatchMessage(result);
+          });
+
+          animation();
+        }}
+      />
 
       <div className="preview-container">
         <img
@@ -67,6 +97,10 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
             })}
           </div>
         </div>
+        <PreviewMessage
+          catchedPokemonNumber={catchedPokemonNumber?.pokemons.length}
+          catchMessage={catchMessage}
+        />
       </div>
       {isSinglePokemon && (
         <div className="selected-id">{selectedPokemon.id}</div>
