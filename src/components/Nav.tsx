@@ -12,7 +12,7 @@ const Nav = ({ backButtonEnabled, navText }: Props) => {
     <StyledNav>
       {backButtonEnabled && (
         <img
-          src="../public/arrowLeft.png"
+          src="/arrowLeft.png"
           alt="white arrow head pointed left"
           onClick={() => navigate("/")}
         />

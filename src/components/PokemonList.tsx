@@ -39,7 +39,7 @@ const PokemonList = () => {
 
     return id;
   });
-  const currentDate = format(dataUpdatedAt, "dd MMM yy, H:mm");
+  const currentDate = format(dataUpdatedAt, "dd MMM yy, H:mm:ss");
   if (isLoading)
     return (
       <>
@@ -111,6 +111,7 @@ const PokemonList = () => {
             min={0}
             value={page}
             onChange={(e) => setPage(Number(e.target.value))}
+            readOnly
           />
           <button
             type="button"
