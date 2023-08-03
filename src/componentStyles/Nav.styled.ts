@@ -23,14 +23,18 @@ export const StyledNav = styled.nav`
     margin-left: auto;
     color: white;
   }
-  .right-item {
+  .catched-number {
     align-self: center;
     text-align: center;
     margin-right: 20px;
+    font-size:26px;
     width: 28px;
     height: 28px;
-    background-color: white;
+    background-color: rgba(250, 251, 253, 1);
+
+   
     border-radius: 50%;
+    border: none;
     color: black;
   }
 `;
