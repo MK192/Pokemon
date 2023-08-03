@@ -8,12 +8,30 @@ export const StyledPokemonPreview = styled.div`
   border-radius: 8px;
   display: flex;
   align-items: start;
+
+  .button-container{
+    display: inline-block;
+  }
+  button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  
+}
+
   .pokeball {
     height: 47px;
     width: 47px;
     position: absolute;
   }
-
+  .pokeball-inactive{
+    height: 47px;
+    width: 47px;
+    position: absolute;
+    opacity:10%;
+  }
   .pokeball-spining{
     height: 47px;
     width: 47px;
@@ -47,21 +65,47 @@ export const StyledPokemonPreview = styled.div`
     align-items: center;
     flex-direction: column;
     padding-top: 10px;
+
     .preview-image {
       height: 120px;
       width: 110px;
       margin-bottom: 15px;
     }
+    .catched-image{
+      position: relative;
+      height: 1.8rem;
+      width: 2rem;
+    
+      
+      .outer-image {
+      width: 100%;
+      height: 100%;
+      margin-top:0px;
+}
 
+    .inner-image {
+        
+      position: absolute;
+      top: 25%; 
+      left: 50%;
+      transform: translate(-50%, -50%);  
+      width: 50%;
+      height: 50%;
+      z-index: 1;
+       }
+
+    }
     .pokemon-preview-name {
       display: flex;
       align-items: center;
-      gap: 10px;
+     
+      gap: 5px;
       margin-bottom: 15px;
       strong {
         font-size: 20px;
       }
       img {
+        margin-top: 5px;
         width: 18px;
         height: 17px;
       }

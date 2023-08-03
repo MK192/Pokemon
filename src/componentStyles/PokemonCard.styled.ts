@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-export const StyledPokemonCard = styled.div`
+export const StyledPokemonCard = styled.button`
+
+  border: none;
+  // next line is for Safari, because he create 2 lines on top and bottom of card
+  background-color: transparent;
+
   .pokemon-card,
   .pokemon-card-selected {
     display: flex;
@@ -11,7 +16,7 @@ export const StyledPokemonCard = styled.div`
     border-radius: 8px;
     font-size: 16px;
     padding: 20px;
-    margin: 5px;
+    
 
     width: 40rem;
   }
@@ -25,8 +30,8 @@ export const StyledPokemonCard = styled.div`
     margin-left: auto;
     border: 1px solid #fafbfd;
     background-color: #fafbfd;
-    width: 20px;
-    height: 20px;
+   
+    padding: 5px 8px;
     text-align: center;
     border-radius: 50%;
     box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.09);
@@ -42,4 +47,5 @@ export const StyledPokemonCard = styled.div`
     object-fit: contain;
     object-position: left;
   }
+  
 `;
