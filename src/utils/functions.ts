@@ -1,5 +1,5 @@
-import { FormData, UserData } from '../types/types';
-
+import { FormData, UserData ,PokemonsModal} from '../types/types';
+import { format } from 'date-fns';
 /* this functions checks is localstorage available to read or write */
 
 export function isLocalStorageAccessible() {
@@ -28,7 +28,7 @@ export const handleSave = (
       name: formValues.name,
       age: formValues.age,
       email: formValues.email,
-      pokemons: [],
+      pokemons:[],
     };
 
     localStorage.setItem('pokemonMaster', JSON.stringify(user));
@@ -41,7 +41,7 @@ export const handleSave = (
 
 
 
-export const pokemonCatch=(pokemonId:number): Promise<string>=>{
+export const pokemonCatch=(selectedPokemon:string,pokemonId:number): Promise<string>=>{
   return new Promise((resolve) => {
   let user:UserData={};
   
@@ -53,9 +53,15 @@ export const pokemonCatch=(pokemonId:number): Promise<string>=>{
     console.log(number)
     console.log(user.pokemons.length)
     if(number===1 && user && user?.pokemons.length<9){
-      user?.pokemons.push(Number(pokemonId))
+      const poki:PokemonsModal={
+        id:Number(pokemonId),
+        name:selectedPokemon,
+        timeCatched:format(Date.now(), 'dd MMM yy, H:mm:ss')
+      }
+      user?.pokemons.push(poki)
       localStorage.setItem('pokemonMaster',JSON.stringify(user))
       resolve('catched');
+     
 
     alert('pokemon catched');
     
@@ -71,3 +77,48 @@ export const pokemonCatch=(pokemonId:number): Promise<string>=>{
 })
 
 }
+
+/* function for removing single pokemon from logged user collection*/
+
+export const removePokemon=(id:number)=>{
+  let user:UserData={};
+  
+  if (isLocalStorageAccessible()) {
+     user = JSON.parse(localStorage.getItem('pokemonMaster')||'{}');
+
+
+     user.pokemons=user.pokemons.filter((pokemon)=>pokemon.id!==id);
+
+     localStorage.setItem('pokemonMaster',JSON.stringify(user));
+
+     return user;
+}
+
+}
+
+
+/* this function should release all pokemons from user storage. */
+
+
+export const relaseAllPokemons=()=>{
+  let user:UserData={};
+  
+  if (isLocalStorageAccessible()) {
+     user = JSON.parse(localStorage.getItem('pokemonMaster')||'{}');
+    user.pokemons=[];
+    localStorage.setItem('pokemonMaster',JSON.stringify(user));
+    return user;
+  }
+  
+}
+
+/* this function change first letter of string to be be upper case */
+export const capitalizeFirstLetter=(str:string)=> {
+  if (str?.length === 0) {
+      return str; 
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1);
+
+}
+
+

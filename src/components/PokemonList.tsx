@@ -75,7 +75,7 @@ const PokemonList = () => {
                 <PokemonError offset={offset} />;
             </>
         );
-    console.log(pokemons);
+
     return (
         <>
             <Nav backButtonEnabled={false} navText="Pokemon App" />
