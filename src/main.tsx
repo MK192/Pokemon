@@ -8,10 +8,10 @@ import GlobalStyles from './styles/GlobalStyles.ts';
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <GlobalStyles />
-      <App />
-    </QueryClientProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <GlobalStyles />
+            <App />
+        </QueryClientProvider>
+    </React.StrictMode>
 );

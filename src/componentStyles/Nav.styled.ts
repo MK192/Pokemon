@@ -31,7 +31,7 @@ export const StyledNav = styled.nav`
     width: 28px;
     height: 28px;
     background-color: rgba(250, 251, 253, 1);
-
+    cursor: pointer;
    
     border-radius: 50%;
     border: none;

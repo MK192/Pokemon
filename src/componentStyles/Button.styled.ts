@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 interface BorderColor {
   borderColor: string;
+  buttonColor:string;
 }
 export const StyledButton = styled.button<BorderColor>`
   border: 2px solid ${({ borderColor }) => borderColor};
@@ -10,7 +11,9 @@ export const StyledButton = styled.button<BorderColor>`
   font-weight: 700;
   display: flex;
   align-items: center;
+  
   gap: 10px;
+  background: ${({ buttonColor }) => buttonColor};;
   cursor: pointer;
   img {
     height: 27px;

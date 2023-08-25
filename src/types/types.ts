@@ -8,7 +8,7 @@ export type UserData = {
   name: string;
   age: string;
   email: string;
-  pokemons: number[];
+  pokemons: PokemonsModal[];
 };
 
 export type PokemonResult = {
@@ -21,7 +21,12 @@ export type Pokemons = {
   previous: string | null;
   results: PokemonResult;
 };
+export type PokemonsModal={
 
+  id:number;
+  name:string;
+  timeCatched:string
+}
 export type SelectedAbility = {
   ability: {
     name: string;

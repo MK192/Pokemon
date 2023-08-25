@@ -140,6 +140,10 @@ export const StyledPokemonPreview = styled.div`
           box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.05);
           border-radius: 8px;
           text-align: center;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        
         }
       }
     }

@@ -43,9 +43,9 @@ export const StyledPokemonCard = styled.button`
   }
   img {
     width: 70px;
-
+    height: 70px;
     object-fit: contain;
-    object-position: left;
+    object-position: center;
   }
   
 `;

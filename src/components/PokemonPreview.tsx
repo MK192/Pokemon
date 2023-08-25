@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { SelectedAbility } from '../types/types';
 import { pokemonCatch } from '../utils/functions';
 import { isLocalStorageAccessible } from '../utils/functions';
+import { useUserData } from '../context/UserContext';
 
 import axios from 'axios';
 import PreviewMessage from './PreviewMessage';
@@ -15,6 +16,8 @@ type Props = {
 };
 const PokemonPreview = ({ isSinglePokemon }: Props) => {
     const { selected } = useSelectedId();
+    const { setLogedUser } = useUserData();
+
     const [isAnimationActive, setIsAnimationActive] = useState(false);
     const [catchMessage, setCatchMessage] = useState('');
     let catchedPokemonNumber = null;
@@ -57,10 +60,20 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
                 <button
                     type="button"
                     onClick={() => {
-                        pokemonCatch(selected).then((result) => {
-                            console.log(result);
-                            setCatchMessage(result);
-                        });
+                        pokemonCatch(selectedPokemon.name, selected).then(
+                            (result) => {
+                                setCatchMessage(result);
+                                if (result === 'catched') {
+                                    setLogedUser(
+                                        JSON.parse(
+                                            localStorage.getItem(
+                                                'pokemonMaster'
+                                            ) || '[]'
+                                        )
+                                    );
+                                }
+                            }
+                        );
 
                         animation();
                     }}
