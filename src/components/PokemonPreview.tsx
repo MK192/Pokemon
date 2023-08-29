@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelectedId } from '../context/SelectedPokemonContext';
 import { StyledPokemonPreview } from '../componentStyles/PokemonPreview.styled';
 import { useQuery } from '@tanstack/react-query';
@@ -7,6 +7,7 @@ import { SelectedAbility } from '../types/types';
 import { pokemonCatch } from '../utils/functions';
 import { isLocalStorageAccessible } from '../utils/functions';
 import { useUserData } from '../context/UserContext';
+import { UserData } from '../types/types';
 
 import axios from 'axios';
 import PreviewMessage from './PreviewMessage';
@@ -20,12 +21,21 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
 
     const [isAnimationActive, setIsAnimationActive] = useState(false);
     const [catchMessage, setCatchMessage] = useState('');
-    let catchedPokemonNumber = null;
-    if (isLocalStorageAccessible()) {
-        catchedPokemonNumber = JSON.parse(
-            localStorage.getItem('pokemonMaster') || '{}'
-        );
-    }
+    const [catchedPokemonNumber, setCatchPokemonNumber] =
+        useState<UserData | null>(null);
+
+    useEffect(() => {
+        if (isLocalStorageAccessible()) {
+            setCatchPokemonNumber(
+                JSON.parse(localStorage.getItem('pokemonMaster') || '{}')
+            );
+        }
+    }, []);
+
+    const isPokemonStorageFull =
+        catchedPokemonNumber?.pokemons &&
+        catchedPokemonNumber?.pokemons.length >= 9;
+
     const {
         isLoading,
         isError,
@@ -77,13 +87,13 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
 
                         animation();
                     }}
-                    disabled={catchedPokemonNumber?.pokemons.length >= 9}
+                    disabled={isPokemonStorageFull ? true : false}
                 >
                     <img
                         src="/pokeball.png"
                         alt="pokeball"
                         className={
-                            catchedPokemonNumber?.pokemons.length >= 9
+                            isPokemonStorageFull
                                 ? 'pokeball-inactive'
                                 : isAnimationActive
                                 ? 'pokeball-spining'
@@ -147,7 +157,7 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
                     </div>
                 </div>
                 <PreviewMessage
-                    catchedPokemonNumber={catchedPokemonNumber?.pokemons.length}
+                    catchedPokemonNumber={catchedPokemonNumber}
                     catchMessage={catchMessage}
                 />
             </div>

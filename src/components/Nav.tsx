@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { capitalizeFirstLetter } from '../utils/functions';
 
-import Modal from './Modal';
+import PokemonModal from './PokemonModal';
+
 type Props = {
     backButtonEnabled: boolean;
     navText: string;
@@ -33,11 +34,11 @@ const Nav = ({ backButtonEnabled, navText }: Props) => {
                     className="catched-number"
                     onClick={() => setIsModalActive(true)}
                 >
-                    {logedUser.pokemons.length}
+                    {logedUser.pokemons ? logedUser.pokemons.length : null}
                 </button>
             ) : null}
 
-            {isModalActive && <Modal setShowModal={setIsModalActive} />}
+            {isModalActive && <PokemonModal setShowModal={setIsModalActive} />}
         </StyledNav>
     );
 };

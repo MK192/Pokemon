@@ -8,7 +8,7 @@ export type UserData = {
   name: string;
   age: string;
   email: string;
-  pokemons: PokemonsModal[];
+  pokemons: PokemonsModal[] |null;
 };
 
 export type PokemonResult = {

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 interface BackgroundColor {
-    pokemonName: string;
+    pokemonName?: string;
   }
-export const StyledItemModal = styled.div<BackgroundColor>`
+export const StyledModalPokemonCard = styled.div<BackgroundColor>`
     border: 1px solid #f2f2f2;
     box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.0025);
     border-radius: 8px;
