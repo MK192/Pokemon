@@ -2,6 +2,7 @@ import { capitalizeFirstLetter } from '../utils/functions';
 import { StyledModalInfo } from '../componentStyles/ModalInfo.styled';
 import { PokemonsModal } from '../types/types';
 import { useUserData } from '../context/UserContext';
+
 type Props = {
     catchedPokemon: PokemonsModal[];
     selectedPokemonId: number | null;
@@ -13,21 +14,21 @@ const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
     will be showed.
     There is 3 version, whitch version is displayed depends on value of catchedPokemon.length,
     is there selectedPokemonId.
-    There is version when user dont have pokemon catched, there is version when user have catched pokemon/pokemon 
+    There is version when user don't have pokemon catched, there is version when user have catched pokemon/pokemon 
     and no pokemon is selected, and there is version where user have catched pokemon/pokemons and one pokemon is 
     selected for information */
 
     const modalInfo =
-        logedUser && logedUser?.pokemons?.length > 0
+        logedUser?.pokemons && logedUser?.pokemons?.length > 0
             ? 1
-            : logedUser &&
+            : logedUser?.pokemons &&
               logedUser?.pokemons?.length > 0 &&
               typeof selectedPokemonId !== 'number';
     2;
 
     // console.log(modalInfo);
     //console.log(catchedPokemon);
-    console.log(typeof selectedPokemonId);
+    //console.log(typeof selectedPokemonId);
     //console.log(logedUser);
 
     return modalInfo === 1 ? (
@@ -41,17 +42,13 @@ const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
                         typeof catchedPokemon[selectedPokemonId] !== 'string' &&
                         catchedPokemon
                             ? capitalizeFirstLetter(
-                                  catchedPokemon[selectedPokemonId].name
+                                  catchedPokemon[selectedPokemonId]?.name
                               )
                             : ''}
                     </strong>
                     <div className="catched-time">
                         <p>Catched:</p>
-                        <p>
-                            {capitalizeFirstLetter(
-                                catchedPokemon[selectedPokemonId].timeCatched
-                            )}
-                        </p>
+                        <p>{catchedPokemon[selectedPokemonId]?.timeCatched}</p>
                     </div>
                 </div>
             ) : (

@@ -43,7 +43,7 @@ export const handleSave = (
 
 export const pokemonCatch=(selectedPokemon:string,pokemonId:number): Promise<string>=>{
   return new Promise((resolve) => {
-  let user:UserData={};
+  let user:UserData;
   
   if (isLocalStorageAccessible()) {
      user = JSON.parse(localStorage.getItem('pokemonMaster')||'{}');
@@ -81,7 +81,7 @@ export const pokemonCatch=(selectedPokemon:string,pokemonId:number): Promise<str
 /* function for removing single pokemon from logged user collection*/
 
 export const removePokemon=(id:number)=>{
-  let user:UserData={};
+  let user:UserData;
   
   if (isLocalStorageAccessible()) {
      user = JSON.parse(localStorage.getItem('pokemonMaster')||'{}');
@@ -101,7 +101,7 @@ export const removePokemon=(id:number)=>{
 
 
 export const relaseAllPokemons=()=>{
-  let user:UserData={};
+  let user:UserData;
   
   if (isLocalStorageAccessible()) {
      user = JSON.parse(localStorage.getItem('pokemonMaster')||'{}');
@@ -112,12 +112,14 @@ export const relaseAllPokemons=()=>{
   
 }
 
-/* this function change first letter of string to be be upper case */
+ //this function change first letter of string to be be upper case 
 export const capitalizeFirstLetter=(str:string)=> {
   if (str?.length === 0) {
       return str; 
   }
-  return str.charAt(0).toUpperCase() + str.slice(1);
+
+  str=str[0].toUpperCase()+str.slice(1);
+  return str
 
 }
 

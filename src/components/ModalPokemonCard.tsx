@@ -1,27 +1,31 @@
 import 'react-toastify/dist/ReactToastify.css';
 
-import { StyledItemModal } from '../componentStyles/ItemModal.styled';
+import { StyledModalPokemonCard } from '../componentStyles/ModalPokemonCard.styled';
 import { PokemonsModal } from '../types/types';
 import { removePokemon } from '../utils/functions';
 import { useUserData } from '../context/UserContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 
 type Props = {
     pokemon: PokemonsModal;
     index: number;
     setSelectedPokemonId: (selectedId: number) => void;
 };
-const ItemModal = ({ pokemon, index, setSelectedPokemonId }: Props) => {
-    const { logedUser, setLogedUser } = useUserData();
-
+const ModalPokemonCard = ({ pokemon, index, setSelectedPokemonId }: Props) => {
+    const { setLogedUser } = useUserData();
+    const [count, setCount] = useState(0);
     const showToastMessagePokemonRelease = () => {
         toast.success(`${pokemon.name} relased`, {
             position: toast.POSITION.TOP_RIGHT,
         });
     };
+    useEffect(() => {
+        console.log(count);
+    }, []);
 
     return pokemon.name ? (
-        <StyledItemModal
+        <StyledModalPokemonCard
             className="catched"
             pokemonName={pokemon?.name}
             onClick={() => setSelectedPokemonId(index)}
@@ -53,16 +57,16 @@ const ItemModal = ({ pokemon, index, setSelectedPokemonId }: Props) => {
             />
 
             <p>{pokemon.name}</p>
-        </StyledItemModal>
+        </StyledModalPokemonCard>
     ) : (
-        <StyledItemModal className="empty">
+        <StyledModalPokemonCard className="empty">
             <img
                 src={'/onlyPokeball.png'}
                 className="free-slot-img"
                 alt="pokeball"
             />
-        </StyledItemModal>
+        </StyledModalPokemonCard>
     );
 };
 
-export default ItemModal;
+export default ModalPokemonCard;

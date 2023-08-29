@@ -21,7 +21,7 @@ const Button = ({
             buttonColor={buttonColor}
             onClick={handleClick}
         >
-            {icon && <img src="white-pokeball.png" alt="white pokeball" />}{' '}
+            {icon && <img src="/white-pokeball.png" alt="white pokeball" />}{' '}
             {text}
         </StyledButton>
     );
