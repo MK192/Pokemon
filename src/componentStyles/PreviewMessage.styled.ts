@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 export const StyledPreviewMessage = styled.div`
   
-  margin-top:60px;
+  margin-top:30px;
 
   .capacity-full,.failed,.catched {
     font-size:14px;

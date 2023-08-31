@@ -1,66 +1,30 @@
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { StyledPokemonSingle } from "../componentStyles/PokemonSingle.styled";
-import { format } from "date-fns";
+import { useParams, useLocation } from 'react-router-dom';
+import { StyledPokemonSingle } from '../componentStyles/PokemonSingle.styled';
+import { format } from 'date-fns';
 
-import axios from "axios";
-import Nav from "./Nav";
-import PokemonPreview from "./PokemonPreview";
+import Nav from './Nav';
+import PokemonPreview from './PokemonPreview';
 
 const PokemonSingle = () => {
-  const { id } = useParams();
+    const { id } = useParams();
+    const location = useLocation();
+    const selectedName = location.state;
+    const currentDate = format(Date.now(), 'dd MMM yy, H:mm:ss');
 
-  const {
-    isLoading,
-    isError,
-    error,
-    data: singlePokemon,
-    dataUpdatedAt,
-  } = useQuery({
-    queryKey: ["pokemon", id],
-
-    refetchOnWindowFocus: false,
-    queryFn: () =>
-      axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`).then((res) => {
-        return res.data;
-      }),
-  });
-
-  const currentDate = format(dataUpdatedAt, "dd MMM yy, H:mm:ss");
-
-  if (isLoading)
     return (
-      <>
-        <Nav backButtonEnabled={true} navText="Loading" />
-        <p>Loading</p>
-      </>
+        <>
+            <Nav backButtonEnabled={true} navText={selectedName} />
+            <StyledPokemonSingle>
+                <img
+                    src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${id}.svg`}
+                    alt="pokemon background"
+                    className="background-pokemon-image"
+                />
+                <div className="pokemon-single-container">
+                    <PokemonPreview isSinglePokemon={true} />
+                </div>
+            </StyledPokemonSingle>
+        </>
     );
-
-  if (isError && error instanceof Error)
-    return (
-      <>
-        <Nav backButtonEnabled={true} navText="Error" />
-        <p>An error has occurred: {error.message}</p>
-      </>
-    );
-  return (
-    <>
-      <Nav backButtonEnabled={true} navText={singlePokemon.name} />
-      <StyledPokemonSingle>
-        <img
-          src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${id}.svg`}
-          alt="pokemon background"
-          className="background-pokemon-image"
-        />
-        <div className="pokemon-single-container">
-          <PokemonPreview isSinglePokemon={true} />
-        </div>
-        <div className="fetch-time">
-          <span>Data fetched: </span>
-          {currentDate}
-        </div>
-      </StyledPokemonSingle>
-    </>
-  );
 };
 export default PokemonSingle;

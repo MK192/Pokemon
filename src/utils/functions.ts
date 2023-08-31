@@ -112,7 +112,7 @@ export const relaseAllPokemons=()=>{
   
 }
 
- //this function change first letter of string to be be upper case 
+ /*this function change first letter of string to be be upper case */
 export const capitalizeFirstLetter=(str:string)=> {
   if (str?.length === 0) {
       return str; 
@@ -124,3 +124,35 @@ export const capitalizeFirstLetter=(str:string)=> {
 }
 
 
+/*this function should return correct value for message and nameOfClass.
+Depending on catchedPokemonNumber, catchMessage values, className for div
+and right message should be displayed */
+
+export const previewMessage=(catchedPokemonNumber: UserData | null, catchMessage?:string)=>{
+
+  let message = '';
+  let nameOfClass = '';
+  if (
+      catchedPokemonNumber?.pokemons &&
+      catchedPokemonNumber.pokemons.length >= 9
+  ) {
+      message = 'Poke Storage full!';
+      nameOfClass = 'capacity-full';
+  } else if (
+      catchedPokemonNumber?.pokemons &&
+      catchedPokemonNumber.pokemons.length < 9 &&
+      catchMessage === 'catched'
+  ) {
+      message = 'catched';
+      nameOfClass = 'catched';
+  } else if (
+      catchedPokemonNumber?.pokemons &&
+      catchedPokemonNumber.pokemons.length < 9&&
+      catchMessage === 'failed'
+  ) {
+      message = 'catching failed, try again';
+      nameOfClass = 'failed';
+  }
+
+  return {message,nameOfClass}
+}

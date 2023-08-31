@@ -18,7 +18,7 @@ type Props = {
 };
 
 const PokemonModal = ({ setShowModal }: Props) => {
-    const { logedUser, setLogedUser } = useUserData();
+    const { loggedUser, setLogedUser } = useUserData();
 
     const [catchedPokemon, setCatchedPokemon] = useState<PokemonsModal[]>([]);
     const [selectedPokemonId, setSelectedPokemonId] = useState<number | null>(
@@ -46,7 +46,7 @@ const PokemonModal = ({ setShowModal }: Props) => {
             }
             setCatchedPokemon(catched);
         }
-    }, [logedUser?.pokemons]);
+    }, [loggedUser?.pokemons]);
 
     return (
         <Modal setShowModal={setShowModal}>
@@ -75,9 +75,9 @@ const PokemonModal = ({ setShowModal }: Props) => {
                         alt="big pokeball"
                     />
                     <div className="button-container">
-                        {logedUser &&
-                        logedUser?.pokemons &&
-                        logedUser?.pokemons.length > 0 ? (
+                        {loggedUser &&
+                        loggedUser?.pokemons &&
+                        loggedUser?.pokemons.length > 0 ? (
                             <Button
                                 text="Release All"
                                 icon={true}

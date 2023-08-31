@@ -4,12 +4,13 @@ import { UserData } from '../types/types';
 
 // user data context
 interface UserDataContext {
-    logedUser: null | UserData;
+    loggedUser: null | UserData;
     setLogedUser: (changeUserData: UserData) => void;
 }
 
 const UserDataContext = createContext<UserDataContext>({
-    logedUser: JSON.parse(localStorage.getItem('pokemonMaster') || '0') || null,
+    loggedUser:
+        JSON.parse(localStorage.getItem('pokemonMaster') || '0') || null,
     setLogedUser: function (changeUserData: UserData): void {
         throw new Error('Function not implemented.');
     },
@@ -20,14 +21,14 @@ export function useUserData() {
 }
 
 const UserContext = ({ children }: any) => {
-    const [logedUser, setLogedUser] = useState(
+    const [loggedUser, setLogedUser] = useState(
         isLocalStorageAccessible()
             ? JSON.parse(localStorage.getItem('pokemonMaster') || '0') || null
             : null
     );
 
     return (
-        <UserDataContext.Provider value={{ logedUser, setLogedUser }}>
+        <UserDataContext.Provider value={{ loggedUser, setLogedUser }}>
             {children}
         </UserDataContext.Provider>
     );

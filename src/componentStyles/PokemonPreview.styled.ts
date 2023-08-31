@@ -146,6 +146,9 @@ export const StyledPokemonPreview = styled.div`
         
         }
       }
+      .time-fetched{
+        margin-top :30px;
+      }
     }
   }
 `;
