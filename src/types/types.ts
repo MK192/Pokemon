@@ -33,3 +33,8 @@ export type SelectedAbility = {
     url: string;
   };
 };
+
+export type Colors={
+    name:string;
+    url:string;
+}

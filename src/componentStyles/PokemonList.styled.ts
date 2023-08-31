@@ -5,6 +5,7 @@ export const StyledPokemonList = styled.div`
   margin: 20px 15px 30px 15px;
   flex-wrap: wrap;
   .filter {
+    
     align-self: flex-end;
     font-size: 1.6rem;
     color: #818181;
@@ -22,7 +23,10 @@ export const StyledPokemonList = styled.div`
       background-repeat: no-repeat;
       background-position-x: 95%;
       background-position-y: 50%;
+     
     }
+    
+   
   }
 
   hr {

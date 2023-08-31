@@ -20,6 +20,7 @@ const ModalPokemonCard = ({ pokemon, index, setSelectedPokemonId }: Props) => {
             position: toast.POSITION.TOP_RIGHT,
         });
     };
+
     useEffect(() => {
         console.log(count);
     }, []);

@@ -11,10 +11,11 @@ type Props = {
     navText: string;
 };
 const Nav = ({ backButtonEnabled, navText }: Props) => {
-    const { logedUser } = useUserData();
+    const { loggedUser } = useUserData();
     const navigate = useNavigate();
 
     const [isModalActive, setIsModalActive] = useState(false);
+
     return (
         <StyledNav>
             {backButtonEnabled && (
@@ -28,13 +29,13 @@ const Nav = ({ backButtonEnabled, navText }: Props) => {
             <div className="left-item">
                 <span className="title">{capitalizeFirstLetter(navText)}</span>
             </div>
-            {logedUser ? (
+            {loggedUser ? (
                 <button
                     type="button"
                     className="catched-number"
                     onClick={() => setIsModalActive(true)}
                 >
-                    {logedUser.pokemons ? logedUser.pokemons.length : null}
+                    {loggedUser.pokemons ? loggedUser.pokemons.length : null}
                 </button>
             ) : null}
 

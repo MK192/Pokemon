@@ -1,35 +1,18 @@
 import { StyledPreviewMessage } from '../componentStyles/PreviewMessage.styled';
 import { format } from 'date-fns';
 import { UserData } from '../types/types';
+import { previewMessage } from '../utils/functions';
+
 type Props = {
     catchedPokemonNumber: UserData | null;
     catchMessage?: string;
 };
-const PreviewMessage = ({ catchedPokemonNumber, catchMessage }: Props) => {
-    let message = '';
-    let nameOfClass = '';
-    if (
-        catchedPokemonNumber?.pokemons &&
-        catchedPokemonNumber.pokemons.length >= 9
-    ) {
-        message = 'Poke Storage full!';
-        nameOfClass = 'capacity-full';
-    } else if (
-        catchedPokemonNumber?.pokemons &&
-        catchedPokemonNumber.pokemons.length < 9 &&
-        catchMessage === 'catched'
-    ) {
-        message = 'catched';
-        nameOfClass = 'catched';
-    } else if (
-        catchedPokemonNumber?.pokemons &&
-        catchedPokemonNumber.pokemons.length < 9 &&
-        catchMessage === 'failed'
-    ) {
-        message = 'catching failed, try again';
-        nameOfClass = 'failed';
-    }
 
+const PreviewMessage = ({ catchedPokemonNumber, catchMessage }: Props) => {
+    const { message, nameOfClass } = previewMessage(
+        catchedPokemonNumber,
+        catchMessage
+    );
     const currentDate = format(Date.now(), 'dd MMM yy, H:mm:ss');
 
     return (

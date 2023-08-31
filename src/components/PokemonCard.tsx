@@ -22,7 +22,10 @@ const PokemonCard = ({ pokemon, isError, isLoading, error, ids }: Props) => {
                 className={
                     selected === ids ? 'pokemon-card-selected' : 'pokemon-card'
                 }
-                onClick={() => setSelected(ids)}
+                onClick={() => {
+                    setSelected(ids);
+                    localStorage.setItem('selected', JSON.stringify(ids));
+                }}
             >
                 <img
                     src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${ids}.svg`}

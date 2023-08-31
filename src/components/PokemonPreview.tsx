@@ -8,6 +8,7 @@ import { pokemonCatch } from '../utils/functions';
 import { isLocalStorageAccessible } from '../utils/functions';
 import { useUserData } from '../context/UserContext';
 import { UserData } from '../types/types';
+import { format } from 'date-fns';
 
 import axios from 'axios';
 import PreviewMessage from './PreviewMessage';
@@ -16,13 +17,17 @@ type Props = {
     isSinglePokemon: boolean;
 };
 const PokemonPreview = ({ isSinglePokemon }: Props) => {
-    const { selected } = useSelectedId();
     const { setLogedUser } = useUserData();
-
+    const { selected } = useSelectedId();
     const [isAnimationActive, setIsAnimationActive] = useState(false);
     const [catchMessage, setCatchMessage] = useState('');
     const [catchedPokemonNumber, setCatchPokemonNumber] =
         useState<UserData | null>(null);
+    const [pokemonId, setPokemonId] = useState(
+        isLocalStorageAccessible()
+            ? JSON.parse(localStorage.getItem('selected') || '')
+            : 1
+    );
 
     useEffect(() => {
         if (isLocalStorageAccessible()) {
@@ -31,6 +36,16 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
             );
         }
     }, []);
+
+    /* pokemonId state and this useEffect is use to preserve selected pokemon
+    id. Without saving selected id in localstorage data will be reverted to 
+    default value (1).*/
+
+    useEffect(() => {
+        if (isLocalStorageAccessible()) {
+            setPokemonId(JSON.parse(localStorage.getItem('selected') || '1'));
+        }
+    }, [selected]);
 
     const isPokemonStorageFull =
         catchedPokemonNumber?.pokemons &&
@@ -41,16 +56,18 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
         isError,
         error,
         data: selectedPokemon,
+        dataUpdatedAt,
     } = useQuery({
-        queryKey: ['pokemons', selected],
+        queryKey: ['pokemons', pokemonId],
 
         refetchOnWindowFocus: false,
         queryFn: () =>
             axios
-                .get(`https://pokeapi.co/api/v2/pokemon/${selected}`)
+                .get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
                 .then((res) => {
                     return res.data;
                 }),
+        staleTime: 100000000,
     });
 
     const animation = () => {
@@ -70,7 +87,7 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
                 <button
                     type="button"
                     onClick={() => {
-                        pokemonCatch(selectedPokemon.name, selected).then(
+                        pokemonCatch(selectedPokemon.name, pokemonId).then(
                             (result) => {
                                 setCatchMessage(result);
                                 if (result === 'catched') {
@@ -104,7 +121,7 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
             </div>
             <div className="preview-container">
                 <img
-                    src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${selected}.svg`}
+                    src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${pokemonId}.svg`}
                     alt={`pokemon - ${selectedPokemon.name}}`}
                     className="preview-image"
                 />
@@ -125,7 +142,10 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
                     )}
                     <strong>{selectedPokemon.name}</strong>
                     {!isSinglePokemon && (
-                        <Link to={`pokemon/${selected}`}>
+                        <Link
+                            to={`pokemon/${pokemonId}`}
+                            state={selectedPokemon.name}
+                        >
                             <button type="button">
                                 <img src="preview.png" alt="arrow icon " />
                             </button>
@@ -155,12 +175,17 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
                             }
                         )}
                     </div>
+                    <div className="time-fetched">
+                        Data fetched:{' '}
+                        {format(dataUpdatedAt, 'dd MMM yy, H:mm:ss')}
+                    </div>
                 </div>
                 <PreviewMessage
                     catchedPokemonNumber={catchedPokemonNumber}
                     catchMessage={catchMessage}
                 />
             </div>
+
             {isSinglePokemon && (
                 <div className="selected-id">{selectedPokemon.id}</div>
             )}

@@ -8,7 +8,7 @@ type Props = {
     selectedPokemonId: number | null;
 };
 const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
-    const { logedUser } = useUserData();
+    const { loggedUser } = useUserData();
 
     /* modalInfo provide information about what what version of this component 
     will be showed.
@@ -19,10 +19,10 @@ const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
     selected for information */
 
     const modalInfo =
-        logedUser?.pokemons && logedUser?.pokemons?.length > 0
+        loggedUser?.pokemons && loggedUser?.pokemons?.length > 0
             ? 1
-            : logedUser?.pokemons &&
-              logedUser?.pokemons?.length > 0 &&
+            : loggedUser?.pokemons &&
+              loggedUser?.pokemons?.length > 0 &&
               typeof selectedPokemonId !== 'number';
     2;
 
@@ -53,7 +53,7 @@ const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
                 </div>
             ) : (
                 <div className="message-container-2">
-                    <p> Hi, {logedUser?.name}</p>
+                    <p> Hi, {loggedUser?.name}</p>
                     <p>Hover over Pokemon to see some info.</p>
                 </div>
             )}
@@ -61,7 +61,7 @@ const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
     ) : (
         <StyledModalInfo>
             <div className="message-container-3">
-                <p>Hi, {logedUser?.name}</p>
+                <p>Hi, {loggedUser?.name}</p>
 
                 <p className="empty-pokestorage">Your PokeStorage empty,</p>
                 <p className="go-catch"> go catch some pokemons.</p>
