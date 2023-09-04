@@ -6,15 +6,15 @@ type Props = {
     isError: boolean;
     isLoading: boolean;
     error: unknown;
-    ids: number;
+    ids: number | null;
 };
 const PokemonCard = ({ pokemon, isError, isLoading, error, ids }: Props) => {
     const { selected, setSelected } = useSelectedId();
 
-    if (isLoading) return 'Loading...';
+    if (isLoading) return <div>Loading...</div>;
 
     if (isError && error instanceof Error)
-        return 'An error has occurred: ' + error.message;
+        return <div>An error has occurred: ${error.message}</div>;
 
     return (
         <StyledPokemonCard>
@@ -23,7 +23,7 @@ const PokemonCard = ({ pokemon, isError, isLoading, error, ids }: Props) => {
                     selected === ids ? 'pokemon-card-selected' : 'pokemon-card'
                 }
                 onClick={() => {
-                    setSelected(ids);
+                    ids && setSelected(ids);
                     localStorage.setItem('selected', JSON.stringify(ids));
                 }}
             >

@@ -1,4 +1,4 @@
-import { FormData, UserData ,PokemonsModal} from '../types/types';
+import { FormData, UserData ,PokemonsModal, PokemonResult} from '../types/types';
 import { format } from 'date-fns';
 /* this functions checks is localstorage available to read or write */
 
@@ -50,9 +50,9 @@ export const pokemonCatch=(selectedPokemon:string,pokemonId:number): Promise<str
   
   setTimeout(()=>{
     const number=Math.floor(Math.random()*2);
-    console.log(number)
-    console.log(user.pokemons.length)
-    if(number===1 && user && user?.pokemons.length<9){
+    
+    if(number===1 && user && user?.pokemons &&
+      user?.pokemons.length<9){
       const poki:PokemonsModal={
         id:Number(pokemonId),
         name:selectedPokemon,
@@ -61,21 +61,39 @@ export const pokemonCatch=(selectedPokemon:string,pokemonId:number): Promise<str
       user?.pokemons.push(poki)
       localStorage.setItem('pokemonMaster',JSON.stringify(user))
       resolve('catched');
-     
-
-    alert('pokemon catched');
+      alert('pokemon catched');
+    
+    
     
     }else{
       resolve('failed');
       alert('catching failed')
   
     }
- 
+    
+
   },3000)
 
 }
 })
 
+}
+
+
+/* this function check if pokemon is already catched by logged user*/
+
+export const isCatched=(selectedId:number,userData:UserData|null)=>{
+
+    let isPokemonCatched=false
+  
+  userData?.pokemons?.map((pokemon)=>{
+      if(Number(pokemon.id)===selectedId){
+
+        isPokemonCatched=true;
+      }
+  })
+  
+  return isPokemonCatched;
 }
 
 /* function for removing single pokemon from logged user collection*/
@@ -87,7 +105,8 @@ export const removePokemon=(id:number)=>{
      user = JSON.parse(localStorage.getItem('pokemonMaster')||'{}');
 
 
-     user.pokemons=user.pokemons.filter((pokemon)=>pokemon.id!==id);
+     user.pokemons=user.pokemons && 
+     user.pokemons.filter((pokemon)=>pokemon.id!==id);
 
      localStorage.setItem('pokemonMaster',JSON.stringify(user));
 
@@ -155,4 +174,15 @@ export const previewMessage=(catchedPokemonNumber: UserData | null, catchMessage
   }
 
   return {message,nameOfClass}
+}
+
+/* this function should return id from url that endpoint return */
+
+export const returnId=(pokemon:PokemonResult)=>{
+  const idMatch = pokemon?.url.match(/\/(\d+)\/$/);
+
+  
+  const id = idMatch ? Number(idMatch[1]) : null;
+
+  return id;
 }

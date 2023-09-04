@@ -1,6 +1,5 @@
 import { useParams, useLocation } from 'react-router-dom';
 import { StyledPokemonSingle } from '../componentStyles/PokemonSingle.styled';
-import { format } from 'date-fns';
 
 import Nav from './Nav';
 import PokemonPreview from './PokemonPreview';
@@ -9,7 +8,6 @@ const PokemonSingle = () => {
     const { id } = useParams();
     const location = useLocation();
     const selectedName = location.state;
-    const currentDate = format(Date.now(), 'dd MMM yy, H:mm:ss');
 
     return (
         <>
