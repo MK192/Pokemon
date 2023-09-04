@@ -4,7 +4,7 @@ import { StyledPokemonPreview } from '../componentStyles/PokemonPreview.styled';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { SelectedAbility } from '../types/types';
-import { pokemonCatch } from '../utils/functions';
+import { pokemonCatch, isCatched } from '../utils/functions';
 import { isLocalStorageAccessible } from '../utils/functions';
 import { useUserData } from '../context/UserContext';
 import { UserData } from '../types/types';
@@ -18,23 +18,22 @@ type Props = {
 };
 const PokemonPreview = ({ isSinglePokemon }: Props) => {
     const { setLogedUser } = useUserData();
-    const { selected } = useSelectedId();
+    const { selected, setSelected } = useSelectedId();
+
+    const [isPokemonCatched, setIsPokemonCatched] = useState(false);
     const [isAnimationActive, setIsAnimationActive] = useState(false);
     const [catchMessage, setCatchMessage] = useState('');
-    const [catchedPokemonNumber, setCatchPokemonNumber] =
-        useState<UserData | null>(null);
-    const [pokemonId, setPokemonId] = useState(
+    const [catchedPokemon, setCatchedPokemon] = useState<UserData | null>(
+        JSON.parse(localStorage.getItem('pokemonMaster') || '{}')
+    );
+    /*  const [pokemonId, setPokemonId] = useState(
         isLocalStorageAccessible()
             ? JSON.parse(localStorage.getItem('selected') || '')
             : 1
-    );
+    );*/
 
     useEffect(() => {
-        if (isLocalStorageAccessible()) {
-            setCatchPokemonNumber(
-                JSON.parse(localStorage.getItem('pokemonMaster') || '{}')
-            );
-        }
+        setSelected(1);
     }, []);
 
     /* pokemonId state and this useEffect is use to preserve selected pokemon
@@ -43,13 +42,18 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
 
     useEffect(() => {
         if (isLocalStorageAccessible()) {
-            setPokemonId(JSON.parse(localStorage.getItem('selected') || '1'));
+            setSelected(JSON.parse(localStorage.getItem('selected') || '1'));
         }
-    }, [selected]);
+
+        const userData = JSON.parse(
+            localStorage.getItem('pokemonMaster') || '{}'
+        );
+        const catched = isCatched(selected, userData);
+        setIsPokemonCatched(catched);
+    }, [selected, setSelected, isPokemonCatched]);
 
     const isPokemonStorageFull =
-        catchedPokemonNumber?.pokemons &&
-        catchedPokemonNumber?.pokemons.length >= 9;
+        catchedPokemon?.pokemons && catchedPokemon?.pokemons.length >= 9;
 
     const {
         isLoading,
@@ -58,12 +62,12 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
         data: selectedPokemon,
         dataUpdatedAt,
     } = useQuery({
-        queryKey: ['pokemons', pokemonId],
+        queryKey: ['pokemons', selected],
 
         refetchOnWindowFocus: false,
         queryFn: () =>
             axios
-                .get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+                .get(`https://pokeapi.co/api/v2/pokemon/${selected}`)
                 .then((res) => {
                     return res.data;
                 }),
@@ -76,52 +80,56 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
             setIsAnimationActive(false);
         }, 3000);
     };
-    if (isLoading) return 'Loading...';
+    if (isLoading) return <div>Loading...</div>;
 
     if (isError && error instanceof Error)
-        return 'An error has occurred: ' + error.message;
+        return <div>An error has occurred: error.message</div>;
 
     return (
         <StyledPokemonPreview>
             <div className="button-container">
-                <button
-                    type="button"
-                    onClick={() => {
-                        pokemonCatch(selectedPokemon.name, pokemonId).then(
-                            (result) => {
-                                setCatchMessage(result);
-                                if (result === 'catched') {
-                                    setLogedUser(
-                                        JSON.parse(
-                                            localStorage.getItem(
-                                                'pokemonMaster'
-                                            ) || '[]'
-                                        )
-                                    );
-                                }
-                            }
-                        );
+                {!isPokemonCatched && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            pokemonCatch(selectedPokemon.name, selected).then(
+                                (result) => {
+                                    setCatchMessage(result);
+                                    if (result === 'catched') {
+                                        setIsPokemonCatched(true);
 
-                        animation();
-                    }}
-                    disabled={isPokemonStorageFull ? true : false}
-                >
-                    <img
-                        src="/pokeball.png"
-                        alt="pokeball"
-                        className={
-                            isPokemonStorageFull
-                                ? 'pokeball-inactive'
-                                : isAnimationActive
-                                ? 'pokeball-spining'
-                                : 'pokeball'
-                        }
-                    />
-                </button>
+                                        setLogedUser(
+                                            JSON.parse(
+                                                localStorage.getItem(
+                                                    'pokemonMaster'
+                                                ) || '[]'
+                                            )
+                                        );
+                                    }
+                                }
+                            );
+
+                            animation();
+                        }}
+                        disabled={isPokemonStorageFull ? true : false}
+                    >
+                        <img
+                            src="/pokeball.png"
+                            alt="pokeball"
+                            className={
+                                isPokemonStorageFull
+                                    ? 'pokeball-inactive'
+                                    : isAnimationActive
+                                    ? 'pokeball-spining'
+                                    : 'pokeball'
+                            }
+                        />
+                    </button>
+                )}
             </div>
             <div className="preview-container">
                 <img
-                    src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${pokemonId}.svg`}
+                    src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${selected}.svg`}
                     alt={`pokemon - ${selectedPokemon.name}}`}
                     className="preview-image"
                 />
@@ -143,7 +151,7 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
                     <strong>{selectedPokemon.name}</strong>
                     {!isSinglePokemon && (
                         <Link
-                            to={`pokemon/${pokemonId}`}
+                            to={`pokemon/${selected}`}
                             state={selectedPokemon.name}
                         >
                             <button type="button">
@@ -181,7 +189,7 @@ const PokemonPreview = ({ isSinglePokemon }: Props) => {
                     </div>
                 </div>
                 <PreviewMessage
-                    catchedPokemonNumber={catchedPokemonNumber}
+                    catchedPokemonNumber={catchedPokemon}
                     catchMessage={catchMessage}
                 />
             </div>

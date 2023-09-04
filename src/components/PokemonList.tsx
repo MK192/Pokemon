@@ -4,6 +4,7 @@ import { StyledPokemonList } from '../componentStyles/PokemonList.styled';
 import { format } from 'date-fns';
 import { PokemonResult, Colors } from '../types/types';
 import { useSelectedId } from '../context/SelectedPokemonContext';
+import { returnId } from '../utils/functions';
 
 import axios from 'axios';
 import PokemonCard from './PokemonCard';
@@ -41,9 +42,12 @@ const PokemonList = () => {
                             if (!res.data) {
                                 throw new Error('Error');
                             }
+
                             return res.data;
                         }),
-                staleTime: 1000000000,
+
+                staleTime: Infinity,
+                cacheTime: Infinity,
             },
             {
                 queryKey: ['colors'],
@@ -56,7 +60,8 @@ const PokemonList = () => {
                         .then((res) => {
                             return res.data;
                         }),
-                staleTime: 10000000,
+                staleTime: Infinity,
+                cacheTime: Infinity,
             },
         ],
     });
@@ -67,28 +72,6 @@ const PokemonList = () => {
         JSON.stringify(localStorage.setItem('selected', `${selected}`));
     }, []);
 
-    // extracting ids to send to PokemonCard component for display
-
-    let ids: number[] = [];
-    if (pokemonFilter) {
-        ids = queryResults[0]?.data.pokemon_species
-            ?.slice(page * 8, page * 8 + 8)
-            .map((pokemon: any) => {
-                const idMatch = pokemon?.url.match(/\/(\d+)\/$/);
-                const id = idMatch ? Number(idMatch[1]) : null;
-
-                return id;
-            });
-    } else {
-        ids = queryResults[0]?.data?.results?.map((pokemon: PokemonResult) => {
-            const idMatch = pokemon?.url.match(/\/(\d+)\/$/);
-            const id = idMatch ? Number(idMatch[1]) : null;
-
-            return id;
-        });
-    }
-
-    //const currentDate = format(dataUpdatedAt, 'dd MMM yy, H:mm:ss');
     const currentDate = format(
         queryResults[0]?.dataUpdatedAt,
         'dd MMM yy, H:mm:ss'
@@ -142,42 +125,28 @@ const PokemonList = () => {
                         {pokemonFilter
                             ? queryResults[0]?.data.pokemon_species
                                   ?.slice(page * 8, page * 8 + 8)
-                                  .map(
-                                      (
-                                          pokemon: PokemonResult,
-                                          index: number
-                                      ) => (
-                                          <PokemonCard
-                                              pokemon={pokemon}
-                                              isError={queryResults[0].isError}
-                                              isLoading={
-                                                  queryResults[0].isLoading
-                                              }
-                                              error={queryResults[0].error}
-                                              key={pokemon.name}
-                                              ids={ids[index]}
-                                          />
-                                      )
-                                  )
+                                  .map((pokemon: PokemonResult) => (
+                                      <PokemonCard
+                                          pokemon={pokemon}
+                                          isError={queryResults[0].isError}
+                                          isLoading={queryResults[0].isLoading}
+                                          error={queryResults[0].error}
+                                          key={pokemon.name}
+                                          ids={returnId(pokemon)}
+                                      />
+                                  ))
                             : queryResults[0]?.data.results
                                   ?.slice(0, 8)
-                                  .map(
-                                      (
-                                          pokemon: PokemonResult,
-                                          index: number
-                                      ) => (
-                                          <PokemonCard
-                                              pokemon={pokemon}
-                                              isError={queryResults[0].isError}
-                                              isLoading={
-                                                  queryResults[0].isLoading
-                                              }
-                                              error={queryResults[0].error}
-                                              key={pokemon.name}
-                                              ids={ids[index]}
-                                          />
-                                      )
-                                  )}
+                                  .map((pokemon: PokemonResult) => (
+                                      <PokemonCard
+                                          pokemon={pokemon}
+                                          isError={queryResults[0].isError}
+                                          isLoading={queryResults[0].isLoading}
+                                          error={queryResults[0].error}
+                                          key={pokemon.name}
+                                          ids={returnId(pokemon)}
+                                      />
+                                  ))}
                     </div>
                     <div className="pokemon-preview">
                         <PokemonPreview isSinglePokemon={false} />

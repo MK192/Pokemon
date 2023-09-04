@@ -26,11 +26,6 @@ const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
               typeof selectedPokemonId !== 'number';
     2;
 
-    // console.log(modalInfo);
-    //console.log(catchedPokemon);
-    //console.log(typeof selectedPokemonId);
-    //console.log(logedUser);
-
     return modalInfo === 1 ? (
         <StyledModalInfo>
             {catchedPokemon?.length > 0 &&
@@ -46,10 +41,14 @@ const ModalInfo = ({ catchedPokemon, selectedPokemonId }: Props) => {
                               )
                             : ''}
                     </strong>
-                    <div className="catched-time">
-                        <p>Catched:</p>
-                        <p>{catchedPokemon[selectedPokemonId]?.timeCatched}</p>
-                    </div>
+                    {catchedPokemon[selectedPokemonId]?.timeCatched && (
+                        <div className="catched-time">
+                            <p>Catched:</p>
+                            <p>
+                                {catchedPokemon[selectedPokemonId]?.timeCatched}
+                            </p>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div className="message-container-2">
