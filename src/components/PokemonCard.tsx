@@ -1,6 +1,9 @@
 import { StyledPokemonCard } from '../componentStyles/PokemonCard.styled';
 import { useSelectedId } from '../context/SelectedPokemonContext';
 import { PokemonResult } from '../types/types';
+import { returnId } from '../utils/functions';
+import { Link } from 'react-router-dom';
+
 type Props = {
     pokemon: PokemonResult;
     isError: boolean;
@@ -32,6 +35,14 @@ const PokemonCard = ({ pokemon, isError, isLoading, error, ids }: Props) => {
                     alt={`pokemon-${pokemon?.name}`}
                 />
                 <p className="pokemon-name">{pokemon?.name}</p>
+
+                <Link to={`pokemon/${selected}`} state={pokemon?.name}>
+                    <img
+                        src="preview.png"
+                        alt="arrow icon "
+                        className="preview-image"
+                    />
+                </Link>
                 <span className="pokemon-id">{ids}</span>
             </div>
         </StyledPokemonCard>

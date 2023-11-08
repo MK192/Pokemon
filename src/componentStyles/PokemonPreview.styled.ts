@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 export const StyledPokemonPreview = styled.div`
   background-color: white;
-  height: 500px;
+  height: 49rem;
   padding: 10px;
   border: 1px solid #f2f2f2;
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.05);
@@ -151,4 +151,28 @@ export const StyledPokemonPreview = styled.div`
       }
     }
   }
+
+  // responsive
+  @media (max-width:420px){
+
+    .preview-container{
+      margin-top:40px ;
+    
+    }
+    .preview-abilities {
+       
+        gap: 20px;
+        
+        .ability {
+          width: 40% !important;          
+        
+        }
+
+      }
+      
+      .time-fetched{
+       display: none;
+      
+      }
+}
 `;

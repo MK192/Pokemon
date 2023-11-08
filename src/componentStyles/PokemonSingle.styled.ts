@@ -26,4 +26,20 @@ export const StyledPokemonSingle = styled.div`
         color:#969696
     }
   }
+
+  //responsive 
+  @media (max-width: 520px) {
+   
+  
+    .pokemon-single-container {
+   
+     width: 70%;
+  }
+  .background-pokemon-image{
+    display: none;
+  }
+  }
+
+  
+
 `;

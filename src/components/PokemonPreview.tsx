@@ -4,8 +4,11 @@ import { StyledPokemonPreview } from '../componentStyles/PokemonPreview.styled';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { SelectedAbility } from '../types/types';
-import { pokemonCatch, isCatched } from '../utils/functions';
-import { isLocalStorageAccessible } from '../utils/functions';
+import {
+    pokemonCatch,
+    isCatched,
+    isLocalStorageAccessible,
+} from '../utils/functions';
 import { useUserData } from '../context/UserContext';
 import { UserData } from '../types/types';
 import { format } from 'date-fns';
