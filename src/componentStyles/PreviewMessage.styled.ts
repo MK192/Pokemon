@@ -20,4 +20,13 @@ export const StyledPreviewMessage = styled.div`
     color: black;
     font-weight:400
   }
+
+
+  //responsive 
+  @media(max-width:350px){
+    .capacity-full,.failed,.catched {
+    font-size:11px;
+    font-weight:700
+  }
+  }
 `;

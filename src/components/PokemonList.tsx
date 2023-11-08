@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useQueries } from '@tanstack/react-query';
-import { StyledPokemonList } from '../componentStyles/PokemonList.styled';
 import { format } from 'date-fns';
 import { PokemonResult, Colors } from '../types/types';
 import { useSelectedId } from '../context/SelectedPokemonContext';
 import { returnId } from '../utils/functions';
+import { StyledPokemonList } from '../componentStyles/PokemonList.styled';
 
 import axios from 'axios';
 import PokemonCard from './PokemonCard';
@@ -159,7 +159,9 @@ const PokemonList = () => {
                     </div>
                     <div className="pokemon-count">
                         <span>Total pokemons:</span>{' '}
-                        {queryResults[0]?.data.count}
+                        {pokemonFilter
+                            ? queryResults[0]?.data?.pokemon_species?.length
+                            : queryResults[0]?.data?.count}
                     </div>
                 </div>
                 <hr />

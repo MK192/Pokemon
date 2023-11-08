@@ -10,7 +10,7 @@ export const StyledModal = styled.div`
         min-width: 200px;
         font-size: 1.6rem;
         min-height: 150px;
-       
+
         background-color: white;
         border-radius: 10px;
         position: fixed;
@@ -31,5 +31,12 @@ export const StyledModal = styled.div`
         align-items: center;
         justify-content: center;
     }
-   
+
+    //resposnive
+
+    @media (max-width: 500px) {
+        .modal {
+            padding: 30px 5px 30px 5px;
+        }
+    }
 `;

@@ -98,19 +98,19 @@ const PokemonModal = ({ setShowModal }: Props) => {
                                 }}
                             />
                         ) : null}
+                        <div className="exit-button">
+                            <Button
+                                text="Exit"
+                                icon={false}
+                                borderColor="#292B29"
+                                buttonColor="transparent"
+                                handleClick={() => {
+                                    setShowModal(false);
+                                }}
+                            />
+                        </div>
                     </div>
 
-                    <div className="exit-button">
-                        <Button
-                            text="Exit"
-                            icon={false}
-                            borderColor="#292B29"
-                            buttonColor="transparent"
-                            handleClick={() => {
-                                setShowModal(false);
-                            }}
-                        />
-                    </div>
                     <ToastContainer />
                 </div>
             </StyledPokemonModal>

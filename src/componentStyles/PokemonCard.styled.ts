@@ -4,7 +4,7 @@ export const StyledPokemonCard = styled.button`
   border: none;
   // next line is for Safari, because he create 2 lines on top and bottom of card
   background-color: transparent;
-
+  width: 47%;
   .pokemon-card,
   .pokemon-card-selected {
     display: flex;
@@ -18,7 +18,8 @@ export const StyledPokemonCard = styled.button`
     padding: 20px;
     
 
-    width: 40rem;
+   // width: 40rem;
+  // width:80%;
   }
 
   .pokemon-card-selected {
@@ -40,6 +41,7 @@ export const StyledPokemonCard = styled.button`
   .pokemon-name {
     margin-left: 15px;
     color: #292b29;
+    
   }
   img {
     width: 70px;
@@ -47,5 +49,47 @@ export const StyledPokemonCard = styled.button`
     object-fit: contain;
     object-position: center;
   }
+  .preview-image{
+    display: none;
+  }
+
+  //responsive 
+  @media(max-width:1200px){
+    width: 47%;
+ 
+
+  }
+
+  @media(max-width:820px){
+    width:49%;
+    .preview-image{
+    display: inline;
+    height: 22px;
+    margin-left:auto;
+    margin-top:5px ;
+   
+  }
+  
+  .pokemon-id {
+  margin-left:auto ;
+ 
+  }
+  .pokemon-name{
+    width: 30%;
+  }
+  }
+
+  @media(max-width:650px){
+   width: 70%;
+    margin: auto;
+  }
+
+  @media(max-width:460px){
+    width: 90%;
+    .pokemon-id {
+      display: none;
+    }
+  }
+
   
 `;

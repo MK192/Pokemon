@@ -42,4 +42,17 @@ export const StyledModalPokemonCard = styled.div<BackgroundColor>`
     width: 90%;
    
   }
+
+
+  //responsive
+
+  @media (max-width:890px){
+    height:25%;
+    width: 25%;
+  }
+
+  @media(max-width:650px){
+    height: 12rem;
+   
+  }
 `;
